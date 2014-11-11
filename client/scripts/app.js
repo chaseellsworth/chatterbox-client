@@ -15,7 +15,7 @@ chatRoom.prototype.getMessages = function() {
       var messages = data.results;
 
       $('#messages').empty();
-
+      console.log(messages);
       for (var i = 0; i < messages.length; i++) {
         var message = messages[i];
         var text = chatRoom.prototype.htmlEscape(message.text);
@@ -24,10 +24,11 @@ chatRoom.prototype.getMessages = function() {
         var room = chatRoom.prototype.htmlEscape(message.roomname);
 
         var $message = $('<div>' +
+          //add if statement to make a href if friend, if not than a p
           '<p>' + user +'</p>' +
           '<p>' + text +'</p>' +
           '<p>' + time +'</p>' +
-          '<p>' + room +'</p>' +
+          '<a href=#>' + room +'</a>' +
           '</div>');
 
         $('#messages').append($message);
@@ -83,35 +84,30 @@ $(document).ready(function(){
   var chatterbox = new chatRoom;
   chatterbox.getMessages();
 
-
   // setInterval(chatterbox.getMessages, 3000);
   $("button").on("click", function(){
     chatterbox.getMessages();
   });
 
-$("#user_name").on("focusout",function(e){
-  e.preventDefault();
-  chatterbox.username = $("#user_name").val();
-
-});
-
-$("#new_message").keypress(function(e){
-  if (e.which === 13 || e.keycode === 13){
+  $("#user_name").on("focusout",function(e){
     e.preventDefault();
-    var newMessage = $("#new_message").val();
-    $("#new_message").val("");
-    chatterbox.formatMessage(newMessage);
-    chatterbox.getMessages();
-
-  }
-});
-
-//////////////////USERNAME
+    chatterbox.username = $("#user_name").val();
+    //makes greeting from username
+    var $greeting = $("<p>Hello,  " + chatterbox.username + "!</p>");
+    $greeting.prependTo($("#main"));
+    $("#user_name").remove();
+  });
 
 
-//////////////////POST
-
-//////////////////POST
+  $("#new_message").keypress(function(e){
+    if (e.which === 13 || e.keycode === 13){
+      e.preventDefault();
+      var newMessage = $("#new_message").val();
+      $("#new_message").val("");
+      chatterbox.formatMessage(newMessage);
+      chatterbox.getMessages();
+    }
+  });
 
 
 
