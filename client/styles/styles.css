@@ -88,3 +88,7 @@ p {
 #messages div {
     border: 1px solid #BFBFBD;
 }
+
+#new_message {
+    height: 48px;
+}
