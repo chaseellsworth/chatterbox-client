@@ -79,6 +79,8 @@ chatRoom.prototype.getMessages = function(room) {
 //   });
 // }
 
+//_.escape(message);
+
 chatRoom.prototype.htmlEscape = function(str) {
   return String(str)
             .replace(/&/g, '&amp;')
