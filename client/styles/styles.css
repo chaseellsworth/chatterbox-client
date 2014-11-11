@@ -9,7 +9,6 @@ body {
     width: 500px;
     margin: auto;
     text-align: left;
-    background: white;
     padding: 50px 60px;
     border: 2px solid #DDE0CF;
 }
@@ -59,7 +58,7 @@ form input[type=text] {
     padding: 5px;
 }
 
-.chat {
+/*.chat {
     padding: 5px;
     margin-bottom: 5px;
     background-color: #eee;
@@ -81,7 +80,7 @@ form input[type=text] {
 
 .spinner img {
     padding: 10px;
-}
+}*/
 
 p {
     margin: 2px;

@@ -56,7 +56,6 @@ $(document).ready(function(){
   // setInterval(getMessages, 3000);
   $("button").on("click", function(){
     getMessages();
-    console.log(1)
   });
 
   // console.log(messages);
