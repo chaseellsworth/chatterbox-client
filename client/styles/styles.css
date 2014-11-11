@@ -1,7 +1,8 @@
 body {
     background: #DDE0CF;
     text-align: center;
-    font-family: 'Lato',arial, sans-serif;
+    font-family: 'Lato';
+    font-weight: 400;
     box-sizing: border-box;
 }
 
@@ -19,6 +20,9 @@ body {
     margin-bottom: 5px;
     padding: 5px;
     color: #84A586;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    /*font-family: 'Montserrat';*/
 }
 
 #main h1 span {
@@ -87,6 +91,7 @@ p {
 }
 #messages div {
     border: 1px solid #BFBFBD;
+    border-radius: 5px;
 }
 
 #new_message {
