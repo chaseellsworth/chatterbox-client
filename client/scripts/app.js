@@ -1,5 +1,6 @@
 var chatRoom = function() {
   this.username;
+  this.friends = [];
 };
 
 chatRoom.prototype.getMessages = function(room) {
@@ -9,6 +10,8 @@ chatRoom.prototype.getMessages = function(room) {
   } else {
     data = {order: '-createdAt', limit: 50, where: {roomname: room}};
   }
+
+  var context = this;
 
   $.ajax({
     url: 'https://api.parse.com/1/classes/chatterbox',
@@ -26,12 +29,29 @@ chatRoom.prototype.getMessages = function(room) {
         var user = chatRoom.prototype.htmlEscape(message.username);
         var time = chatRoom.prototype.htmlEscape(message.createdAt);
         var room = chatRoom.prototype.htmlEscape(message.roomname);
+        var isFriend = false;
+        var friendTest = function(){
+            console.log('here1');
+            console.log(context);
+            // debugger;
+          _.each(context.friends, function(friend){
+            console.log('here2');
+            if (chatRoom.prototype.htmlEscape(friend) === user) {
+              isFriend = true;
+            };
+          })
+        };
+        friendTest();
+        console.log(isFriend);
+
+        var textForMessage = isFriend ? '<p class="bold_message">' + text +'</p>' : '<p>' + text +'</p>';
 
         var $message = $('<div>' +
-          '<p>' + user +'</p>' +
-          '<p>' + text +'</p>' +
+          '<p class="username">' + user +'</p>' +
+          '<a href="#" class="follow_button">follow</a>' +
+          textForMessage +
           '<p>' + time +'</p>' +
-          '<a href=# id="chosen_room">' + room +'</a>' +
+          '<a href=# class="chosen_room">' + room +'</a>' +
           '</div>');
 
         $('#messages').append($message);
@@ -43,6 +63,8 @@ chatRoom.prototype.getMessages = function(room) {
     }
   });
 };
+
+
 
 // chatRoom.prototype.enterChatRoom = function(room){
 //   $.ajax({
@@ -90,12 +112,12 @@ chatRoom.prototype.htmlEscape = function(str) {
             .replace(/>/g, '&gt;');
 };
 
-chatRoom.prototype.formatMessage = function(message){
+chatRoom.prototype.formatMessage = function(message, chatroom){
 
   var formattedMessage = {
   'username':  this.username,
   'text':  message,
-  'roomname': 'door'
+  'roomname': chatroom
   };
   this.postMessage(formattedMessage);
 };
@@ -123,7 +145,7 @@ $(document).ready(function(){
   chatterbox.getMessages();
 
   // setInterval(chatterbox.getMessages, 3000);
-  $("button").on("click", function(){
+  $("#refresh").on("click", function(){
     chatterbox.getMessages();
   });
 
@@ -131,7 +153,7 @@ $(document).ready(function(){
     e.preventDefault();
     chatterbox.username = $("#user_name").val();
     //makes greeting from username
-    var $greeting = $("<p>Hello,  " + chatterbox.username + "!</p>");
+    var $greeting = $("<p id='greeting'>Hello,  " + chatterbox.username + "!</p>");
     $greeting.prependTo($("#main"));
     $("#user_name").remove();
   });
@@ -140,17 +162,27 @@ $(document).ready(function(){
     if (e.which === 13 || e.keycode === 13){
       e.preventDefault();
       var newMessage = $("#new_message").val();
+      var newRoom = $('#new_room').val();
       $("#new_message").val("");
-      chatterbox.formatMessage(newMessage);
+      $("#new_room").val("");
+      chatterbox.formatMessage(newMessage, newRoom);
       chatterbox.getMessages();
     }
   });
 
-  $("#main").on("click","#chosen_room", function(e){
+  $("#main").on("click",".chosen_room", function(e){
     e.preventDefault();
-    var room = $("#chosen_room").text();
+    var room = $(this).text();
     console.log(room);
     chatterbox.getMessages(room);
   });
+
+  $("#main").on("click",".follow_button", function(e){
+      e.preventDefault();
+      chatterbox.friends.push($(this).prev().text());
+      console.log(chatterbox.friends);
+      chatterbox.getMessages();
+    });
+
 
 });

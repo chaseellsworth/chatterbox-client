@@ -4,6 +4,12 @@ body {
     font-family: 'Lato';
     font-weight: 400;
     box-sizing: border-box;
+    color: #2C2031;
+    font-size: 14px;
+}
+a, a:visited {
+  text-decoration: none;
+  color: inherit;
 }
 
 #main {
@@ -19,10 +25,9 @@ body {
     font-size: 35px;
     margin-bottom: 5px;
     padding: 5px;
-    color: #84A586;
+    color: #458B72;
     font-family: 'Montserrat';
     font-weight: bold;
-    /*font-family: 'Montserrat';*/
 }
 
 #main h1 span {
@@ -57,7 +62,7 @@ form {
 
 form input[type=text] {
     margin-right: 10px;
-    width: 70%;
+    width: 100%;
     font-size: 12px;
     padding: 5px;
 }
@@ -85,15 +90,49 @@ form input[type=text] {
 .spinner img {
     padding: 10px;
 }*/
-
+input {
+    background: #CED3B5;
+    border: 1px solid #AAAE94;
+    width:100%;
+    font-size: 18px;
+}
+#new_room {
+    margin-top: 2px;
+}
+#new_message {
+    margin-top: 7px;
+    height: 40px;
+}
+#greeting {
+    font: 18px "Montserrat";
+    color: #2D44E2;
+}
+#refresh {
+    font-size:14px;
+    border: 2px solid #FCA606;
+    padding: 2px;
+    color: #FCA606;
+}
 p {
     margin: 2px;
 }
 #messages div {
-    border: 1px solid #BFBFBD;
+    border: 1px solid #DDCBA2;
     border-radius: 5px;
+    padding: 5px;
 }
-
-#new_message {
-    height: 48px;
+#main .chosen_room {
+    color: #458B72;
+}
+.follow_button {
+    border: 1px solid #DDCBA2;
+    float: right;
+    padding: 2px;
+}
+.username {
+    color: #005E3C;
+}
+.bold_message {
+  font-weight: bold;
+  font-size: 18px;
 }
