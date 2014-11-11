@@ -4,7 +4,6 @@ var chatRoom = function() {
 };
 
 chatRoom.prototype.getMessages = function(room) {
-  //make the data field a variable so that we can sort by chat room
   if (!room) {
     var data = {order: '-createdAt', limit: 50};
   } else {
@@ -20,100 +19,48 @@ chatRoom.prototype.getMessages = function(room) {
     contentType: 'application/json',
     success: function (data) {
       var messages = data.results;
-
       $('#messages').empty();
-      console.log(messages);
+
       for (var i = 0; i < messages.length; i++) {
         var message = messages[i];
-        var text = chatRoom.prototype.htmlEscape(message.text);
-        var user = chatRoom.prototype.htmlEscape(message.username);
-        var time = chatRoom.prototype.htmlEscape(message.createdAt);
-        var room = chatRoom.prototype.htmlEscape(message.roomname);
+        var text = _.escape(message.text);
+        var user = _.escape(message.username);
+        var time = _.escape(message.createdAt);
+        var room = _.escape(message.roomname);
         var isFriend = false;
         var friendTest = function(){
-            console.log('here1');
-            console.log(context);
-            // debugger;
           _.each(context.friends, function(friend){
-            console.log('here2');
             if (chatRoom.prototype.htmlEscape(friend) === user) {
               isFriend = true;
             };
           })
         };
+
         friendTest();
-        console.log(isFriend);
 
         var textForMessage = isFriend ? '<p class="bold_message">' + text +'</p>' : '<p>' + text +'</p>';
-
-        var $message = $('<div>' +
-          '<p class="username">' + user +'</p>' +
-          '<a href="#" class="follow_button">follow</a>' +
-          textForMessage +
-          '<p>' + time +'</p>' +
-          '<a href=# class="chosen_room">' + room +'</a>' +
-          '</div>');
+        var $message = chatRoom.prototype.formatHtmlMessage(user, textForMessage, time, room);
 
         $('#messages').append($message);
       }
     },
     error: function (data) {
-      // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Request for data FAILED');
     }
   });
 };
 
-
-
-// chatRoom.prototype.enterChatRoom = function(room){
-//   $.ajax({
-//     url: 'https://api.parse.com/1/classes/chatterbox',
-//     type: 'GET',
-//     data: {order: '-createdAt', limit: 50, where: {roomname: room}},
-//     contentType: 'application/json',
-//     success: function (data) {
-//       var messages = data.results;
-
-//       $('#messages').empty();
-//       console.log(messages);
-//       for (var i = 0; i < messages.length; i++) {
-//         var message = messages[i];
-//         var text = chatRoom.prototype.htmlEscape(message.text);
-//         var user = chatRoom.prototype.htmlEscape(message.username);
-//         var time = chatRoom.prototype.htmlEscape(message.createdAt);
-//         var room = chatRoom.prototype.htmlEscape(message.roomname);
-
-//         var $message = $('<div>' +
-//           '<p>' + user +'</p>' +
-//           '<p>' + text +'</p>' +
-//           '<p>' + time +'</p>' +
-//           '<a href=# id="chosen_room">' + room +'</a>' +
-//           '</div>');
-
-//         $('#messages').append($message);
-//       }
-//     },
-//     error: function (data) {
-//       // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-//       console.error('chatterbox: Request for data FAILED');
-//     }
-//   });
-// }
-
-//_.escape(message);
-
-chatRoom.prototype.htmlEscape = function(str) {
-  return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
+chatRoom.prototype.formatHtmlMessage = function(user, text, time, room) {
+  return $('<div>' +
+          '<p class="username">' + user +'</p>' +
+          '<a href="#" class="follow_button">follow</a>' +
+          text +
+          '<p>' + time +'</p>' +
+          '<a href=# class="chosen_room">' + room +'</a>' +
+          '</div>');
 };
 
 chatRoom.prototype.formatMessage = function(message, chatroom){
-
   var formattedMessage = {
   'username':  this.username,
   'text':  message,
@@ -124,7 +71,6 @@ chatRoom.prototype.formatMessage = function(message, chatroom){
 
 chatRoom.prototype.postMessage = function(message){
   $.ajax({
-    // always use this url
     url: 'https://api.parse.com/1/classes/chatterbox',
     type: 'POST',
     data: JSON.stringify(message),
@@ -173,14 +119,12 @@ $(document).ready(function(){
   $("#main").on("click",".chosen_room", function(e){
     e.preventDefault();
     var room = $(this).text();
-    console.log(room);
     chatterbox.getMessages(room);
   });
 
   $("#main").on("click",".follow_button", function(e){
       e.preventDefault();
       chatterbox.friends.push($(this).prev().text());
-      console.log(chatterbox.friends);
       chatterbox.getMessages();
     });
 
