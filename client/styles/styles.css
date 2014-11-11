@@ -1,8 +1,8 @@
 body {
-    background: #eee;
+    background: #DDE0CF;
     text-align: center;
-    padding: 0 25px;
-    font-family: arial, sans-serif;
+    font-family: 'Lato',arial, sans-serif;
+    box-sizing: border-box;
 }
 
 #main {
@@ -11,8 +11,7 @@ body {
     text-align: left;
     background: white;
     padding: 50px 60px;
-    border: solid #ddd;
-    border-width: 0 1px 1px 1px;
+    border: 2px solid #DDE0CF;
 }
 
 #main h1 {
@@ -20,6 +19,7 @@ body {
     font-size: 35px;
     margin-bottom: 5px;
     padding: 5px;
+    color: #84A586;
 }
 
 #main h1 span {
@@ -81,4 +81,11 @@ form input[type=text] {
 
 .spinner img {
     padding: 10px;
+}
+
+p {
+    margin: 2px;
+}
+#messages div {
+    border: 1px solid #BFBFBD;
 }
